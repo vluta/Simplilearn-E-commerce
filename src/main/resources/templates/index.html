@@ -11,7 +11,7 @@
 <div class="container">
 <span th:text="${msg}" style="color:red;"></span>
 
-<h2>Welcome to Product Management System!</h2>
+<h2>Admin Product Management System</h2>
 <form action="#" th:action="@{/addProduct}" method="post" th:object="${product}" class="form-group">
 <label>PId</label>
 <input type="number" name="pid" th:field="*{pid}" class="form-control"/><br/>
@@ -19,7 +19,8 @@
 <input type="text" name="pname" th:field="*{pname}" class="form-control"/><br/>
 <label>Price</label>
 <input type="number" name="price" th:field="*{price}" class="form-control"/><br/>
-<input type="submit" th:value="${buttonValue}" name="b1" class="btn btn-success"/>
+<input type="submit" th:value="${buttonValue1}" name="b1" class="btn btn-success"/>
+  <input type="submit" th:value="${buttonValue2}" name="b2" class="btn btn-success"/>
 <input type="reset" value="reset" class="btn btn-info"/>
 </form>
 <hr/>
