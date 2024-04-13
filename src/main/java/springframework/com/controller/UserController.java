@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-//@RequestMapping("user")
 public class UserController {
 
 	@Autowired
@@ -51,7 +50,48 @@ public class UserController {
 		return "user";
 	}
 
-	/*@RequestMapping(value = "/addToOrder",method = RequestMethod.POST)
+	@RequestMapping(value = "/orderPlace",method = RequestMethod.POST)
+	public String placeOrder(Model model, HttpServletRequest req, Orders order, Product product) {
+		String result="";
+		String b1 = req.getParameter("b1");
+		String b2 = req.getParameter("b2");
+		int oid = Integer.parseInt(req.getParameter("oid"));
+		String username = req.getParameter("username");
+		order.setPid(null);
+
+		Login login = loginRepository.findByUsername(username);
+		System.out.println("User:" + login);
+		int uid = loginRepository.findByUsername(username).getUid();
+		order.setUid(uid);
+
+		String name1="Place Order";
+		String name2="Delete Order";
+
+		//TO DO: treat exception for no such order to delete
+		//TO DO: fix orders that wont delete
+		//TO DO: fix H2 console blocked by security
+		if(b1 != null && b1.equals("Place Order")) {
+			result = ordersService.placeOrder(order);
+		} else if (b1 == null & b2.equals("Delete Order")) {
+			System.out.println("Log for deletion before. Oid is: " + oid);
+			result = ordersService.deleteOrder(oid);
+			System.out.println("Log for deletion after");
+		}
+
+		List<Product> listOfProduct = productService.findAllProducts();
+		List<Object[]> orderdetails = productService.orderDetailsByUsername(username);
+		System.out.println("Your Orders details: " + orderdetails.toString());
+		model.addAttribute("products", listOfProduct);
+		model.addAttribute("order", order);
+		model.addAttribute("msg", result);
+		model.addAttribute("buttonValue1", name1);
+		model.addAttribute("buttonValue2", name2);
+		model.addAttribute("orderdetails", orderdetails);
+
+		return "user";
+	}
+
+		/*@RequestMapping(value = "/addToOrder",method = RequestMethod.POST)
 	public String addProductDetails(Model model, Product product,HttpServletRequest req) {
 		int pid = Integer.parseInt(req.getParameter("pid"));
 		order.setPid(pid);
@@ -69,44 +109,5 @@ public class UserController {
 
 		return "user";
 	}*/
-
-	@RequestMapping(value = "/orderPlace",method = RequestMethod.POST)
-	public String placeOrder(Model model, HttpServletRequest req, Orders order, Product product) {
-		String result="";
-		String b1 = req.getParameter("b1");
-		String b2 = req.getParameter("b2");
-		int oid = Integer.parseInt(req.getParameter("oid"));
-		System.out.println("Oid from request: " + oid);
-		String username = req.getParameter("username");
-		System.out.println("Username from request:" + username);
-		order.setPid(null);
-
-		Login login = loginRepository.findByUsername(username);
-		System.out.println("User:" + login);
-		int uid = loginRepository.findByUsername(username).getUid();
-		order.setUid(uid);
-
-		String name1="Place Order";
-		String name2="Delete Order";
-
-		if(b1 != null && b1.equals("Place Order")) {
-			result = ordersService.placeOrder(order);
-		} else if (b1 == null & b2.equals("Delete Order")) {
-			ordersService.deleteOrderById(oid);
-		}
-
-		List<Product> listOfProduct = productService.findAllProducts();
-		model.addAttribute("products", listOfProduct);
-		//model.addAttribute("product", product);
-		model.addAttribute("order", order);
-		model.addAttribute("msg", result);
-		model.addAttribute("buttonValue1", name1);
-		model.addAttribute("buttonValue2", name2);
-		//model.addAttribute("msg", result);
-		List<Object[]> orderdetails = productService.orderDetailsByUsername(username);
-		System.out.println("Your Orders details: " + orderdetails.toString());
-		model.addAttribute("orderdetails", orderdetails);
-		return "user";
-	}
 
 }

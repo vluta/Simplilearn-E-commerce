@@ -1,6 +1,8 @@
 package springframework.com.service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import springframework.com.entity.Orders;
@@ -23,8 +25,18 @@ public class OrdersService {
 		return "Order placed successfully";
 	}
 
-	public void deleteOrderById(int oid) {
+	public String deleteOrder(int oid) {
 
-		ordersRepository.deleteById(oid);
+		Optional<Orders> result = ordersRepository.findById(oid);
+		System.out.println("Order to delete: " + result.get().toString());
+		if (result.isPresent()) {
+			Orders o = result.get();
+			//ordersRepository.deleteByOid(oid);
+			//ordersRepository.deleteById(oid);
+			ordersRepository.delete(o);
+			return "Order deleted successfully";
+		} else {
+			return "Order not present";
+		}
 	}
 }
