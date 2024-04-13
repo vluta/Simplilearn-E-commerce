@@ -21,20 +21,4 @@ public class OrderController {
     @Autowired
     OrdersService ordersService;
 
-    @RequestMapping(value = "/orderPlace",method = RequestMethod.GET)
-    public String placeOrder(Model model, HttpServletRequest req, Orders order, Product product) {
-        int pid = Integer.parseInt(req.getParameter("pid"));
-        order.setPid(pid);
-        String name="Store Product";
-        String result = ordersService.placeOrder(order);
-        List<Product> listOfProduct = productService.findAllProducts();
-        model.addAttribute("products", listOfProduct);
-        model.addAttribute("product", product);
-        model.addAttribute("msg", result);
-        model.addAttribute("buttonValue", name);
-        //model.addAttribute("msg", result);
-        List<Object[]> orderdetails = productService.orderDetails();
-        model.addAttribute("orderdetails", orderdetails);
-        return "index";
-    }
 }

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import springframework.com.entity.Orders;
 import springframework.com.entity.Product;
 import springframework.com.repository.ProductRepository;
 
@@ -70,7 +71,10 @@ public class ProductService {
 		public List<Object[]> orderDetails() {
 			return productRepository.orderDetails();		// custom methods 
 		}
-		
+
+	public List<Object[]> orderDetailsByUsername(String username) {
+		return productRepository.orderDetailsByUsername(username);
+	}
 		
 }
 

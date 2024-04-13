@@ -1,5 +1,6 @@
 package springframework.com.service;
 
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
@@ -29,10 +30,10 @@ public class LoginService implements UserDetailsService{
 	}
 
 	public String[] getRoles(Login ll) {
-		if(ll.getRoles()==null) {
+		if(ll.getRole()==null) {
 			return new String[] {"USER"};
 		}else {
-			return ll.getRoles().split(",");
+			return ll.getRole().split(",");
 		}
 	}
 	
@@ -45,5 +46,9 @@ public class LoginService implements UserDetailsService{
 			return "Account created successfully";
 		}
 		
+	}
+
+	public List<Login> userDetails() {
+		return loginRepository.findAll();
 	}
 }
