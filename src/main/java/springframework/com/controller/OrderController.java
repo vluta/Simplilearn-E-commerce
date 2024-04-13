@@ -10,7 +10,6 @@ import springframework.com.entity.Orders;
 import springframework.com.entity.Product;
 import springframework.com.service.OrdersService;
 import springframework.com.service.ProductService;
-
 import java.util.List;
 
 @Controller

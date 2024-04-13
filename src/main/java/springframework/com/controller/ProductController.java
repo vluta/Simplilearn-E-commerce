@@ -20,7 +20,7 @@ public class ProductController {
 	@Autowired
 	OrdersService ordersService;
 	
-	@RequestMapping(value = "/",method = RequestMethod.GET)
+	@RequestMapping(value = "/admin",method = RequestMethod.GET)
 	public String open(Model model, Product product) {
 	
 	String name1="Store Product";
