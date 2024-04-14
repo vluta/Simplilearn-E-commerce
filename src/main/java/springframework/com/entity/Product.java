@@ -20,6 +20,8 @@ public class Product {
 private int pid;
 private String pname;
 private float price;
+private String category;
+
 @OneToMany(cascade = CascadeType.ALL)
 @JoinColumn(name = "pid")				// Link to FK
 private List<Orders> listOfOrders;
@@ -48,9 +50,24 @@ public float getPrice() {
 public void setPrice(float price) {
 	this.price = price;
 }
-@Override
-public String toString() {
-	return "Product [pid=" + pid + ", pname=" + pname + ", price=" + price + ", listOfOrders=" + listOfOrders + "]";
-}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
+	}
+
+	@Override
+	public String toString() {
+		return "Product{" +
+				"pid=" + pid +
+				", pname='" + pname + '\'' +
+				", price=" + price +
+				", category='" + category + '\'' +
+				", listOfOrders=" + listOfOrders +
+				'}';
+	}
 
 }
