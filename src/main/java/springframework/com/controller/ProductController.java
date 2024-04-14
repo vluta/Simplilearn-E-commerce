@@ -25,10 +25,12 @@ public class ProductController {
 	LoginService loginService;
 	
 	@RequestMapping(value = "/admin",method = RequestMethod.GET)
-	public String open(Model model, Product product) {
+	public String open(Model model, Product product, Login login, HttpServletRequest req) {
 	
 	String name1="Store Product";
 	String name2="Update Product";
+	String name3="Change Password";
+	String result="";
 	
 	List<Product> listOfProduct = productService.findAllProducts();
 	List<Object[]> orderdetails = productService.orderDetails();
@@ -38,25 +40,64 @@ public class ProductController {
 	model.addAttribute("products", listOfProduct);
 	model.addAttribute("buttonValue1", name1);
 	model.addAttribute("buttonValue2", name2);
+	model.addAttribute("buttonValue3", name3);
 	model.addAttribute("product", product);
+	model.addAttribute("login", login);
 	model.addAttribute("orderdetails", orderdetails);
 	model.addAttribute("userdetails", userdetails);
 
 	return "admin";
 	}
+
+	@RequestMapping(value = "/admin",method = RequestMethod.POST)
+	public String updateAdmin(Model model, Product product, Login login, HttpServletRequest req) {
+
+		String name1="Store Product";
+		String name2="Update Product";
+		String name3="Change Password";
+		String result="";
+
+		List<Product> listOfProduct = productService.findAllProducts();
+		List<Object[]> orderdetails = productService.orderDetails();
+		List<Login> userdetails = loginService.userDetails();
+		System.out.println("Users" + userdetails.toString());
+
+		model.addAttribute("products", listOfProduct);
+		model.addAttribute("buttonValue1", name1);
+		model.addAttribute("buttonValue2", name2);
+		model.addAttribute("buttonValue3", name3);
+		model.addAttribute("product", product);
+		model.addAttribute("login", login);
+		model.addAttribute("orderdetails", orderdetails);
+		model.addAttribute("userdetails", userdetails);
+
+		String b3 = req.getParameter("b3");
+
+		if (b3 != null && b3.equals("Change Password")) {
+			result = loginService.changePassword(login);
+		}
+
+		return "admin";
+	}
 	
 	@RequestMapping(value = "/addProduct",method = RequestMethod.POST)
-	public String addProductDetails(Model model, Product product,HttpServletRequest req) {
+	public String addProductDetails(Model model, Product product, Login login, HttpServletRequest req) {
 		String b1 = req.getParameter("b1");
 		String b2 = req.getParameter("b2");
+		String b3 = req.getParameter("b3");
 		String result="";
 		String name1 = "Store Product";
 		String name2 = "Update Product";
+		String name3="Change Password";
 
 		if(b1 != null && b1.equals("Store Product")) {
 			result = productService.storeProduct(product);
 		} else if (b1 == null & b2.equals("Update Product")) {
 			result = productService.updateProduct(product);
+		}
+
+		if (b3 != null && b3.equals("Change Password")) {
+			result = loginService.changePassword(login);
 		}
 
 		product.setPid(0);
@@ -71,18 +112,20 @@ public class ProductController {
 		model.addAttribute("msg", result);
 		model.addAttribute("buttonValue1", name1);
 		model.addAttribute("buttonValue2", name2);
+		model.addAttribute("buttonValue3", name3);
+		model.addAttribute("login", login);
 		model.addAttribute("orderdetails", orderdetails);
 		model.addAttribute("userdetails", userdetails);
 		return "admin";
 	}
 	
 	@RequestMapping(value = "/deleteProduct",method = RequestMethod.GET)
-	public String deleteProductById(Model model, Product product,HttpServletRequest req) {
+	public String deleteProductById(Model model, Product product, Login login, HttpServletRequest req) {
 		int pid = Integer.parseInt(req.getParameter("pid"));
-		System.out.println("pid is "+pid);
 
 		String name1 = "Store Product";
 		String name2 = "Update Product";
+		String name3="Change Password";
 
 		String result = productService.deleteProduct(pid);
 		List<Product> listOfProduct = productService.findAllProducts();
@@ -93,26 +136,11 @@ public class ProductController {
 		model.addAttribute("msg", result);
 		model.addAttribute("buttonValue1", name1);
 		model.addAttribute("buttonValue2", name2);
+		model.addAttribute("buttonValue3", name3);
+		model.addAttribute("login", login);
 		model.addAttribute("orderdetails", orderdetails);
 		model.addAttribute("userdetails", userdetails);
 
 		return "admin";
 	}
-
-	/*@RequestMapping(value = "/orderPlace",method = RequestMethod.GET)
-	public String placeOrder(Model model, HttpServletRequest req, Orders order, Product product) {
-		int pid = Integer.parseInt(req.getParameter("pid"));
-		order.setPid(pid);
-		String name="Store Product"; 
-		String result = ordersService.placeOrder(order);
-		List<Product> listOfProduct = productService.findAllProducts();
-		model.addAttribute("products", listOfProduct);
-		model.addAttribute("product", product);
-		model.addAttribute("msg", result);
-		model.addAttribute("buttonValue", name);
-		//model.addAttribute("msg", result);
-		List<Object[]> orderdetails = productService.orderDetails();
-		model.addAttribute("orderdetails", orderdetails);
-	return "index";
-	}*/
 }

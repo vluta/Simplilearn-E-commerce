@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import springframework.com.entity.Login;
 import springframework.com.repository.LoginRepository;
@@ -50,5 +51,17 @@ public class LoginService implements UserDetailsService{
 
 	public List<Login> userDetails() {
 		return loginRepository.findAll();
+	}
+
+	public String changePassword(Login login) {
+
+		BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+
+		login.setPassword(bCryptPasswordEncoder.encode(login.getPassword()));
+		login.setRole("ADMIN");
+
+		loginRepository.save(login);
+
+		return "Password changed successfully";
 	}
 }

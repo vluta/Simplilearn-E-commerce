@@ -73,6 +73,17 @@
   </tr>
 </table>
 
+  <h2>Password change</h2>
+  <form action="#" th:action="@{/admin}" method="post" th:object="${login}" class="form-group">
+    <label>UId</label>
+    <input type="number" name="uid" th:field="*{uid}" class="form-control"/><br/>
+    <label>Username</label>
+    <input type="text" name="username" th:field="*{username}" class="form-control"/><br/>
+    <label>Password</label>
+    <input type="text" name="password" th:field="*{password}" class="form-control"/><br/>
+    <input type="submit" th:value="${buttonValue3}" name="b3" class="btn btn-success"/>
+  </form>
+
   <hr/>
   <h4>User Details</h4>
   <table border="1" class="table">
